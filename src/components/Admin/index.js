@@ -1,5 +1,5 @@
-// index.js
-// the entry point for the Admin components
+// index.js - Admin
+//  the entry point for the Admin component
 import React, { Component } from 'react'
 import { compose } from 'recompose'
 
@@ -30,6 +30,7 @@ class AdminPage extends Component {
     // register a continuous listener -- triggered every time something changes
     this.props.firebase.users().on('value', snapshot => {
       const usersObject = snapshot.val()
+      
       const usersList = Object.keys(usersObject).map(key => ({
         ...usersObject[key],
         uid: key,

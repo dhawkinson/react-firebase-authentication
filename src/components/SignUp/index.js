@@ -1,24 +1,26 @@
-// index.js
-// the entry point for the SignUp components
+// index.js - SignUp
+//  the entry point for the SignUp component
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 
 import { withFirebase } from '../Firebase'
-
 import * as ROUTES from '../../constants/routes'
-import * as ROLES from '../../constants/routes'
+import * as ROLES from '../../constants/roles'
 
-// build the SignUp page
+import './signup.css'
+
 const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
-    <SignUpForm />
+  <div id='wrapper'>
+    <div className='container'>
+      <h1 className='item'>SignUp Page</h1>
+      <SignUpForm />
+    </div>
   </div>
 )
 
-// initialize the state of the component usinr destructuring
-// in this way the individual state elements can be used as needed
+// initialize the state of the component using destructuring
+// allows INITIAL_STATE to be reset after successful SignUp
 const INITIAL_STATE = {
   username: '',
   email: '',
@@ -32,12 +34,19 @@ class SignUpFormBase extends Component {
   constructor(props) {
     super(props)
 
+    // spread operator (...) spreads out to reach all properties individually
     this.state = { ...INITIAL_STATE }
   }
 
   onSubmit = event => {
     // get necessary info from this.state to pass to the Firebase authentication API
-    const { username, email, passwordOne, isAdmin } = this.state
+    const { 
+      username, 
+      email, 
+      passwordOne, 
+      isAdmin,
+    } = this.state
+
     const roles = {}
 
     if ( isAdmin ) {
@@ -52,7 +61,11 @@ class SignUpFormBase extends Component {
         // create a user in Firebase Realtime database
         return this.props.firebase
           .user(authUser.user.uid)
-          .set({ username, email, roles, })
+          .set({ 
+            username, 
+            email, 
+            // roles, 
+          })
       })
       .then(() => {
         // update state and redirect to Home page
@@ -68,25 +81,20 @@ class SignUpFormBase extends Component {
   }
 
   onChange = event => {
-    // dynamically set state properties, based on which input call is executed
-    // each <input> element (in the return) operates on a different property of state
+    // dynamically set state properties when they change, based on which input call is executed
+    // each <input> element (in the return) operates on a different property of state (according to value)
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  onChangeCheckbox = event => {
-    this.setState({ [ event.target.name ]: event.target.checked })
-  }
-
   render() {
-
-    // destructure (current) state into its individual properties
+    // parse each of the values from current state
     const {
       username,
       email,
       passwordOne,
       passwordTwo,
       isAdmin,
-      error,
+      error
     } = this.state
 
     // list of invalid conditions for which to check (validation of form elements)
@@ -97,11 +105,10 @@ class SignUpFormBase extends Component {
       username === ''
 
     return (
-      // input the elements of state
-      // set the incoming value with value from local state
-      // handle changes to value with onChange function
-      <form onSubmit={this.onSubmit}>
+      // the input form -- with fields (username, email, passwordOne, passwordTwo)
+      <form onSubmit={ this.onSubmit }>
         <input
+          className='item'
           name='username'
           value={username}
           onChange={this.onChange}
@@ -109,6 +116,7 @@ class SignUpFormBase extends Component {
           placeholder='Full Name'
         />
         <input
+          className='item'
           name='email'
           value={email}
           onChange={this.onChange}
@@ -116,6 +124,7 @@ class SignUpFormBase extends Component {
           placeholder='Email Address'
         />
         <input
+          className='item'
           name='passwordOne'
           value={passwordOne}
           onChange={this.onChange}
@@ -123,6 +132,7 @@ class SignUpFormBase extends Component {
           placeholder='Password'
         />
         <input
+          className='item'
           name='passwordTwo'
           value={passwordTwo}
           onChange={this.onChange}
@@ -131,31 +141,30 @@ class SignUpFormBase extends Component {
         />
         <label>
           Admin:
-          <input name='isAdmin' type='checkbox' checked={isAdmin} onChange={this.onChangeCheckbox} />
+          <input
+            name='isAdmin'
+            type='checkbox'
+            checked={isAdmin}
+            onChange={this.onChangeCheckbox}
+          />
         </label>
 
         <br />
 
-        {/* disable the button if the form is invalid */}
-        <button disabled={ isInvalid } type='submit'>Sign Up</button>
+        {/* disable the button if the form is invalid -- see isInvalid above */}
+        <button className='item' disabled={ isInvalid } type='submit'>Sign Up</button>
 
         {/* if there is an error (a default Firebase property), render the error message */}
         {error && <p>{ error.message }</p>}
       </form>
     )
   }
+  
 }
 
-const SignUpLink = () => (
-  <p>Don't have an account? <Link to={ROUTES.SIGN_UP}></Link></p>
-)
+const SignUpLink = () => (<p>Don't have an account? <Link to={ ROUTES.SIGN_UP }>Sign Up</Link></p>)
 
-// build up (compose) the SignUpForm by attaching withRouter and withFirebase to SignUpFormBase
-// giving it access to both router and Firebase properties
-const SignUpForm = compose(
-  withRouter,
-  withFirebase,
-)(SignUpFormBase)
+const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase)
 
 export default SignUpPage
 

@@ -1,5 +1,5 @@
 // index.js
-// the entry point for the PasswordForget components
+// the entry point for the PasswordForget component
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ import * as ROUTES from '../../constants/routes'
 // define password forgot page
 const PasswordForgetPage = () => (
   <div>
-    <h1>Password Forget</h1>
+    <h1>PasswordForget Page</h1>
     <PasswordForgetForm />
   </div>
 )

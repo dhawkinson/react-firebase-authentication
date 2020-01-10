@@ -1,5 +1,5 @@
-// firebase.js
-// the configuration for Firebase
+// firebase.js - Firebase
+//  the Firebase configuration
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
@@ -25,15 +25,15 @@ const devConfig = {
 }
 
 // set the config constant to the appropriate value
-const config = process.env.NODE_ENV = 'production' ? prodConfig : devConfig
+const config = process.env.NODE_ENV === 'production' ? prodConfig : devConfig
 
 class Firebase {
   constructor() {
-    // initialize the app with the Firebase configconfig
+    // initialize the app with the Firebase config
     app.initializeApp(config)
-    // set the current auth to the configured auth
+
     this.auth = app.auth()
-    this.db = app.database
+    this.db = app.database()
   }
 
   // ***** Auth API ***** (use the offical Firebase endpoint)
@@ -51,8 +51,6 @@ class Firebase {
   // ***** Password Update ***** (use the offical Firebase endpoint)
   doPasswordUpdate = password => this.auth.currentUser.updatePassword( password )
 
-  users = () => this.db.ref('users')
-
   // ***** Merge Auth and DB User API *****
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {
@@ -64,7 +62,7 @@ class Firebase {
             
             // default empty roles
             if ( !dbUser.roles ) {
-              dbUser.roles ={}
+              dbUser.roles = {}
             }
 
             // merge auth and db user
@@ -80,8 +78,9 @@ class Firebase {
       }
     })
 
-  // ***** User API ***** (use the offical Firebase endpoint)
+  // ***** User API ***** 
   user = uid => this.db.ref(`users/${uid}`)
+  users = () =>this.db.ref('users')
 }
 
 export default Firebase

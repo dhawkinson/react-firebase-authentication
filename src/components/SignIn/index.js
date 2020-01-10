@@ -1,42 +1,27 @@
-// index.js
-// the entry point for the SignIn components
-import React, {
-  Component
-} from 'react'
-import {
-  withRouter
-} from 'react-router-dom'
-import {
-  compose
-} from 'recompose'
+// index.js - SignIn
+//  the entry point for the SignIn component
+import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'recompose'
 
-import {
-  SignUpLink
-} from '../SignUp'
-import {
-  PasswordForgetLink
-} from '../PasswordForget'
-import {
-  withFirebase
-} from '../Firebase'
+import { SignUpLink } from '../SignUp'
+import { PasswordForgetLink } from '../PasswordForget'
+import { withFirebase } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
 
-const SignInPage = () => ( <
-  div >
-  <
-  h1 > Sign In < /h1> <
-  SignInForm / >
-  <
-  PasswordForgetLink / >
-  <
-  SignUpLink / > {
-    /* <SignInGoogle />
-        <SignInFacebook />
-        <SignInTwitter /> */
-  } <
-  /div>
+const SignInPage = () => (
+  <div id='wrapper'>
+    <div className='container'>
+      <h1 className='item'>SignIn Page</h1>
+      <SignInForm />
+      <PasswordForgetLink />
+      <SignUpLink />
+    </div>
+  </div>
 )
 
+// initialize the state of the component using destructuring
+// allows INITIAL_STATE to be reset after successful SignUp
 const INITIAL_STATE = {
   email: '',
   password: '',
@@ -47,108 +32,94 @@ class SignInFormBase extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      ...INITIAL_STATE
-    }
+    // spread operator (...) spreads out to reach all properties individually
+    this.state = { ...INITIAL_STATE }
   }
 
   onSubmit = event => {
-    // deconstruct variables from state
+    // get necessary info from this.state to pass to the Firebase authentication API
     const {
-      email,
-      password
+      email, 
+      password,
+      // isAdmin 
     } = this.state
 
     this.props.firebase
-      // execute the Firebase SignIn method using deconstructed variables
-      .doSignInWithEmailAndPassword(email, password)
-      // success - set state $ push history for redirect to Home page
+      // execute SignIn function (create a user)
+      .doSignInWithEmailAndPassword( email, password )
+      // successful 
+      // .then( authUser => {
+      //   // create a user in Firebase Realtime database
+      //   return this.props.firebase
+      //     .user(authUser.user.uid)
+      //     .set({ username, email, roles, })
+      // })
       .then(() => {
-        this.setState({
-          ...INITIAL_STATE
-        })
+        // update state and redirect to Home page
+        this.setState({ ...INITIAL_STATE })
         this.props.history.push(ROUTES.HOME)
       })
-      // error set state with error
+      // error - setState, error (if something is wrong)
       .catch(error => {
-        this.setState({
-          error
-        })
+        this.setState({ error })
       })
-
-    // prevent default behavior (rerender of page)
+    // prevent default behavior (a reload of the browser)
     event.preventDefault()
   }
 
   onChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
+    // dynamically set state properties when they change, based on which input call is executed
+    // each <input> element (in the return) operates on a different property of state (according to value)
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   render() {
-    // this render block is similar to the reendeer block for SignUp
-    // check out the comments there
+    // parse each of the values from current state
     const {
       email,
       password,
       error
     } = this.state
 
-    const isInvalid = password === '' || email === ''
+    // list of invalid conditions for which to check (validation of form elements)
+    const isInvalid =
+      password === '' ||
+      email === ''
 
-    return ( <
-      form onSubmit = {
-        this.onSubmit
-      } >
-      <
-      input name = "email"
-      value = {
-        email
-      }
-      onChange = {
-        this.onChange
-      }
-      type = "text"
-      placeholder = "Email Address" /
-      >
-      <
-      input name = "password"
-      value = {
-        password
-      }
-      onChange = {
-        this.onChange
-      }
-      type = "password"
-      placeholder = "Password" /
-      >
-      <
-      button disabled = {
-        isInvalid
-      }
-      type = "submit" >
-      Sign In <
-      /button>
+    return (
+      // the input form -- with fields (username, email, passwordOne, passwordTwo)
+      <form onSubmit={ this.onSubmit }>
+        <input
+          className='item'
+          name='email'
+          value={email}
+          onChange={this.onChange}
+          type='text'
+          placeholder='Email Address'
+        />
+        <input
+          className='item'
+          name='password'
+          value={password}
+          onChange={this.onChange}
+          type='password'
+          placeholder='Password'
+        />
 
-      {
-        error && < p > {
-            error.message
-          } < /p>} <
-          /form>
-      )
-    }
+        <br />
 
+        {/* disable the button if the form is invalid -- see isInvalid above */}
+        <button className='item' disabled={ isInvalid } type='submit'>Sign In</button>
+
+        {/* if there is an error (a default Firebase property), render the error message */}
+        {error && <p>{ error.message }</p>}
+      </form>
+    )
   }
+}
 
-  // similar compose block as in SignUp
-  const SignInForm = compose(
-    withRouter,
-    withFirebase,
-  )(SignInFormBase)
+const SignInForm = compose(withRouter, withFirebase)(SignInFormBase)
 
-  export default SignInPage
+export default SignInPage
 
-  export {
-    SignInForm
-  }
+export { SignInForm }

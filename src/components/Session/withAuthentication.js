@@ -12,7 +12,7 @@ const withAuthentication = Component => {
 
       // initialize the authUser to null
       this.state = {
-        // NOTE: this is a trick to prevent the flicker causeed by activation in the listener
+        // NOTE: this is a trick to prevent the flicker caused by activation in the listener
         authUser: JSON.parse(localStorage.getItem( 'authUser' ))
       }
     }
@@ -20,7 +20,7 @@ const withAuthentication = Component => {
     // NOTE: localStorage API is used to set and remove items that can be identified by a key
     // thereby giving universal access to those items
     componentDidMount() {
-      // on mount activate the listener for an authUser
+      // on mount activate the listener for authUser
       this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
           // set State authUser and localStorage API item when found

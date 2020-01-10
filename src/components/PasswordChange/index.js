@@ -1,5 +1,5 @@
-// index.js
-// the entry point for the PasswordChange component
+// index.js - PasswordChange
+//  the entry point for the PasswordChange component
 import React, { Component } from 'react'
 
 import { withFirebase } from '../Firebase'

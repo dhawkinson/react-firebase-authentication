@@ -13,7 +13,7 @@ const withAuthorization = condition => Component => {
     // upon mounting the component, listen for an authUser
     // if not and authUser or no user redirect to SIGN_IN
     componentDidMount() {
-      this.listener = this.props.firebase.onAuthUserListener(
+      this.listener = this.props.firebase.auth.onAuthStateChanged(
         authUser => {
           if ( !condition(authUser) ) {
             this.props.history.push(ROUTES.SIGN_IN)
@@ -32,9 +32,7 @@ const withAuthorization = condition => Component => {
     render() {
       return (
         <AuthUserContext.Consumer>
-          {authUser =>
-            condition(authUser) ? <Component {...this.props} /> : null
-          }
+          {authUser => condition(authUser) ? <Component {...this.props} /> : null}
         </AuthUserContext.Consumer>
       );
     }

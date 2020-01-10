@@ -1,5 +1,5 @@
-// index.js
-// the entry point for the SignOut components
+// index.js - SignOut
+//  the entry point for the SignOut component
 import React from 'react'
 
 import { withFirebase } from '../Firebase'
