@@ -4,16 +4,17 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 
+import { Typography, Input, Checkbox, FormLabel, Button } from '@material-ui/core'
+
 import { withFirebase } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
 import * as ROLES from '../../constants/roles'
 
-import './signup.css'
+import '../../styles/auth.css'
 
 const SignUpPage = () => (
   <div id='wrapper'>
     <div className='container'>
-      <h1 className='item'>SignUp Page</h1>
       <SignUpForm />
     </div>
   </div>
@@ -54,17 +55,17 @@ class SignUpFormBase extends Component {
     }
 
     this.props.firebase
-      // execute SignUp function (create a user)
+      // create a user (limited access) in the authentication database
       .doCreateUserWithEmailAndPassword( email, passwordOne )
       // successful 
       .then( authUser => {
-        // create a user in Firebase Realtime database
+        // create a user (full access) in Firebase realtime database
         return this.props.firebase
           .user(authUser.user.uid)
           .set({ 
             username, 
             email, 
-            // roles, 
+            roles, 
           })
       })
       .then(() => {
@@ -84,6 +85,10 @@ class SignUpFormBase extends Component {
     // dynamically set state properties when they change, based on which input call is executed
     // each <input> element (in the return) operates on a different property of state (according to value)
     this.setState({ [event.target.name]: event.target.value })
+  }
+
+  onChangeCheckbox = event => {
+    this.setState({ [event.target.name]: event.target.checked })
   }
 
   render() {
@@ -106,8 +111,15 @@ class SignUpFormBase extends Component {
 
     return (
       // the input form -- with fields (username, email, passwordOne, passwordTwo)
-      <form onSubmit={ this.onSubmit }>
-        <input
+      <form className='container signup' onSubmit={ this.onSubmit }>
+        <Typography 
+          variant='h6'
+          className='item'
+        >
+          Sign Up Page
+        </Typography>
+        <br />
+        <Input
           className='item'
           name='username'
           value={username}
@@ -115,7 +127,10 @@ class SignUpFormBase extends Component {
           type='text'
           placeholder='Full Name'
         />
-        <input
+
+        <br />
+
+        <Input
           className='item'
           name='email'
           value={email}
@@ -123,7 +138,10 @@ class SignUpFormBase extends Component {
           type='text'
           placeholder='Email Address'
         />
-        <input
+
+        <br />
+
+        <Input
           className='item'
           name='passwordOne'
           value={passwordOne}
@@ -131,7 +149,10 @@ class SignUpFormBase extends Component {
           type='password'
           placeholder='Password'
         />
-        <input
+
+        <br />
+
+        <Input
           className='item'
           name='passwordTwo'
           value={passwordTwo}
@@ -139,20 +160,29 @@ class SignUpFormBase extends Component {
           type='password'
           placeholder='Confirm Password'
         />
-        <label>
+
+        <br />
+
+        <FormLabel>
           Admin:
-          <input
+          <Checkbox
             name='isAdmin'
-            type='checkbox'
             checked={isAdmin}
             onChange={this.onChangeCheckbox}
           />
-        </label>
+        </FormLabel>
 
         <br />
 
         {/* disable the button if the form is invalid -- see isInvalid above */}
-        <button className='item' disabled={ isInvalid } type='submit'>Sign Up</button>
+        <Button
+          variant='contained'
+          className='item' 
+          disabled={ isInvalid } 
+          type='submit'
+          >
+            Sign Up
+        </Button>
 
         {/* if there is an error (a default Firebase property), render the error message */}
         {error && <p>{ error.message }</p>}

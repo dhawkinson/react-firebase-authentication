@@ -2,7 +2,11 @@
 //  the entry point for the PasswordChange component
 import React, { Component } from 'react'
 
+import { Typography, Input, Button } from '@material-ui/core'
+
 import { withFirebase } from '../Firebase'
+
+import '../../styles/auth.css'
 
 // initialize state
 const INITIAL_STATE = {
@@ -53,29 +57,43 @@ class PasswordChangeForm extends Component {
 
     return (
       // input the password and confirmation password
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        {/* submit to reset */}
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
+      <div id='wrapper'>
+        <form className='container pw-change' onSubmit={this.onSubmit}>
+          <Typography 
+            variant='h6'
+            className='item'
+          >
+            Password Change Page
+          </Typography>
+          <br />
+          <Input
+            className='item'
+            name="passwordOne"
+            value={passwordOne}
+            onChange={this.onChange}
+            type="password"
+            placeholder="New Password"
+          />
+          <Input
+            className='item'
+            name="passwordTwo"
+            value={passwordTwo}
+            onChange={this.onChange}
+            type="password"
+            placeholder="Confirm New Password"
+          />
+          {/* submit to reset */}
+          <Button  
+            className='item'
+            variant='contained'
+            disabled={isInvalid} type="submit">
+            Reset My Password
+          </Button>
 
-        {/* render an error if present */}
-        {error && <p>{error.message}</p>}
-      </form>
+          {/* render an error if present */}
+          {error && <p>{error.message}</p>}
+        </form>
+      </div>
     )
   }
 }

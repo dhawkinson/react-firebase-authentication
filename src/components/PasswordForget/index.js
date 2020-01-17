@@ -3,13 +3,16 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import { Typography, Input, Button } from '@material-ui/core'
+
 import { withFirebase } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
 
+import '../../styles/auth.css'
+
 // define password forgot page
 const PasswordForgetPage = () => (
-  <div>
-    <h1>PasswordForget Page</h1>
+  <div id='wrapper'>
     <PasswordForgetForm />
   </div>
 )
@@ -59,8 +62,16 @@ class PasswordForgetFormBase extends Component {
 
     // enter the email address for which the password is being changed
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <form className='container pw-forget' onSubmit={this.onSubmit}>
+      <Typography 
+        variant='h6'
+        className='item'
+      >
+        Password Forget Page
+      </Typography>
+        <br />
+        <Input
+          className='item'
           name="email"
           value={this.state.email}
           onChange={this.onChange}
@@ -68,9 +79,13 @@ class PasswordForgetFormBase extends Component {
           placeholder="Email Address"
         />
         {/* select to reset the password */}
-        <button disabled={isInvalid} type="submit">
+        <Button
+          variant='contained' 
+          disabled={isInvalid} 
+          type="submit"
+        >
           Reset My Password
-        </button>
+        </Button>
 
         {/* or render the error */}
         {error && <p>{error.message}</p>}
@@ -81,7 +96,7 @@ class PasswordForgetFormBase extends Component {
 
 const PasswordForgetLink = () => (
   // redirect the password reset link
-  <p><Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link></p>
+  <Typography variant='body1'><Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link></Typography>
 )
 
 export default PasswordForgetPage

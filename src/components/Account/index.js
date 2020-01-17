@@ -1,6 +1,6 @@
 // index.js - Account
 // the entry point for the Account component
-import React, { Component } from 'react';
+import React from 'react';
 import { compose } from 'recompose';
 
 import {
@@ -8,7 +8,7 @@ import {
   AuthUserContext,
   // withEmailVerification,
 } from '../Session';
-import { withFirebase } from '../Firebase';
+// import { withFirebase } from '../Firebase';
 import { PasswordForgetForm } from '../PasswordForget';
 import PasswordChangeForm from '../PasswordChange';
 

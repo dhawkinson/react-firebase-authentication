@@ -24,17 +24,21 @@ class AdminPage extends Component {
   }
 
   componentDidMount() {
-    // set loading true
+    // set state loading true
     this.setState({ loading: true })
 
     // register a continuous listener -- triggered every time something changes
     this.props.firebase.users().on('value', snapshot => {
+      // set a users object (collection) from the snapshot
       const usersObject = snapshot.val()
       
+      // map the list of keys (uids) from the usersObject
       const usersList = Object.keys(usersObject).map(key => ({
         ...usersObject[key],
         uid: key,
       }))
+
+      // set state users and loading
       this.setState({
         users: usersList,
         loading: false,
@@ -73,6 +77,7 @@ const UserList = ({ users }) => (
   </ul>
 )
 
+// set condition to authUser when  authUser has the Admin role (by virtue of the double negative)
 const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN]
 
 export default compose(withAuthorization(condition), withFirebase)(AdminPage)

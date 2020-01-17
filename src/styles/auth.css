@@ -1,0 +1,19 @@
+#wrapper {
+  width: 70%;
+  margin: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.item {
+  flex: none;
+}
+
+.btn {
+  font-weight: bold;
+}

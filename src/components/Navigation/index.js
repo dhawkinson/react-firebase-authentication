@@ -20,7 +20,7 @@ const NavigationAuth = ( { authUser } ) => (
   <div>
   <ul>
     {/* authorized users have access to these pages */}
-    <li><Link to={ROUTES.SIGN_IN}>Sign In</Link></li>
+    {/* <li><Link to={ROUTES.SIGN_IN}>Sign In</Link></li> */}
     <li><Link to={ROUTES.LANDING}>Landing</Link></li>
     <li><Link to={ROUTES.HOME}>Home</Link></li>
     <li><Link to={ROUTES.ACCOUNT}>Account</Link></li>

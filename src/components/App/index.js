@@ -4,7 +4,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import { withAuthentication } from '../Session'
-import { withFiresbase } from '../Firebase'
+// import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
 
@@ -16,6 +16,9 @@ import PasswordForgetPage from '../PasswordForget'
 import HomePage from '../Home'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
+
+import 'typeface-roboto'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const App = () => (
 
