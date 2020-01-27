@@ -64,7 +64,8 @@ class PasswordForgetFormBase extends Component {
     return (
       <form className='container pw-forget' onSubmit={this.onSubmit}>
       <Typography 
-        variant='h6'
+        variant='h6' 
+        align = 'center'
         className='item'
       >
         Password Forget Page
@@ -96,7 +97,12 @@ class PasswordForgetFormBase extends Component {
 
 const PasswordForgetLink = () => (
   // redirect the password reset link
-  <Typography variant='body1'><Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link></Typography>
+  <Typography 
+    variant='body1' 
+    align = 'center'
+  >
+    <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
+  </Typography>
 )
 
 export default PasswordForgetPage

@@ -2,12 +2,19 @@
 //  the entry point for the SignOut component
 import React from 'react'
 
+import Button from 'react-bootstrap/Button'
+
 import { withFirebase } from '../Firebase'
 
 const SignOutButton = ({ firebase }) => (
-  <button type="button" onClick={firebase.doSignOut}>
+  <Button 
+    className = 'item btn btn-secondary'
+    type="button" 
+    onClick={firebase.doSignOut}
+    style={{width: '30%'}}
+  >
     Sign Out
-  </button>
+  </Button>
 )
 
 export default withFirebase(SignOutButton)

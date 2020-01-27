@@ -225,6 +225,8 @@ const AccountPage = () => (
 
 // const LoginManagement = withFirebase(LoginManagementBase);
 
+
+// set the condition to true when we have an authUser (by virtue of the double negative)
 const condition = authUser => !!authUser;
 
 export default compose(

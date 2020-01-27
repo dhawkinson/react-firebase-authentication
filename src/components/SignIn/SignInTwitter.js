@@ -32,6 +32,7 @@ class SignInTwitterBase extends Component {
           .set({
             username: socialAuthUser.additionalUserInfo.profile.name,
             email: socialAuthUser.additionalUserInfo.profile.email,
+            signInMethod: 'twitter',
             roles: {},
           })
       })

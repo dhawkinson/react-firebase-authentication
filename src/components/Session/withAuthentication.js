@@ -1,5 +1,5 @@
 // withAuthenication.js
-// a HOC to handle user authentication -- keeps the App component lean and clean
+// a HOC to handle user authentication -- cares making merged authUser available through local storage
 import React from 'react';
 
 import AuthUserContext from './context';
@@ -10,37 +10,29 @@ const withAuthentication = Component => {
     constructor(props) {
       super(props)
 
-      // initialize the authUser to null
       this.state = {
-        // NOTE: this is a trick to prevent the flicker caused by activation in the listener
-        authUser: JSON.parse(localStorage.getItem( 'authUser' ))
+        authUser: JSON.parse(localStorage.getItem( 'authUser' ))     // NOTE: this is a trick to prevent the flicker caused by activation in the listener
       }
     }
-
-    // NOTE: localStorage API is used to set and remove items that can be identified by a key
-    // thereby giving universal access to those items
+    // NOTE: localStorage API is used to set and remove items that can be identified by a key thereby giving universal access to those items
     componentDidMount() {
       // on mount activate the listener for authUser
-      this.listener = this.props.firebase.onAuthUserListener(
-        authUser => {
-          // set State authUser and localStorage API item when found
-          this.setState({ authUser })
+      this.listener = this.props.firebase.onAuthUserListener(        //  this.listener = onAuthUserListener(next, fallback) from firebase.js
+        authUser => {                                                //  the 'next' callback - setState authUser & localStorage API item authUser
           localStorage.setItem('authUser', JSON.stringify(authUser))
+          this.setState({ authUser })
         },
-        // or set State authUser to null and remove localStorage API item
-        () => { 
-          this.setState({ authUser: null }) 
+        () => {                                                      //  the 'fallback' callback - setState authUser=null and remove localStorage API item 
           localStorage.removeItem('authUser')
+          this.setState({ authUser: null })
         }
       )
     }
-
     componentWillUnmount() {
-      // shut down the listener on unmount to prevent memory leaks
-      this.listener();
+      this.listener()                                                //  shut down the listener on unmount to prevent memory leaks
     }
-
     render() {
+      // returns the authUser context -- Provider side
       return (
         <AuthUserContext.Provider value={this.state.authUser}>
           <Component {...this.props} />
@@ -48,7 +40,6 @@ const withAuthentication = Component => {
       );
     }
   }
-
   return withFirebase(WithAuthentication);
 };
 

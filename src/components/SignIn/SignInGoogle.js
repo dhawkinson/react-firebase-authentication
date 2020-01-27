@@ -33,6 +33,7 @@ class SignInGoogleBase extends Component {
           .set({
             username: socialAuthUser.user.displayName,
             email: socialAuthUser.user.email,
+            signInMethod: 'google',
             roles: {},
           })
       })

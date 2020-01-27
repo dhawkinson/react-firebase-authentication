@@ -4,7 +4,6 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import { withAuthentication } from '../Session'
-// import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
 
@@ -23,7 +22,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const App = () => (
 
   <Router>
-    <div>
+    <div className='App'>
       <Navigation />
 
       <hr />
@@ -39,5 +38,5 @@ const App = () => (
   </Router>
 )
 
-// withAuthentication brings the AuthUserContext.Provider with it
+// withAuthentication brings the AuthUserContext.Provider with it, making it available to App & thereby to App's children
 export default withAuthentication(App)

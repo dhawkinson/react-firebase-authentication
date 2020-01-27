@@ -1,6 +1,10 @@
 // index.js - Admin
-//  the entry point for the Admin component
+// The entry point for the Admin component
+// NOTE: Only available to authenticated users with ADMIN role, failure on either condition = redirect to LogIn
 import React, { Component } from 'react'
+
+import { Typography } from '@material-ui/core'
+
 import { compose } from 'recompose'
 
 import { withFirebase } from '../Firebase'
@@ -11,6 +15,8 @@ import * as ROLES from '../../constants/roles';
 
 // import { UserList, UserItem } from '../Users';
 // import * as ROUTES from '../../constants/routes';
+
+import '../../styles/admin.css'
 
 class AdminPage extends Component {
   constructor(props) {
@@ -24,60 +30,64 @@ class AdminPage extends Component {
   }
 
   componentDidMount() {
-    // set state loading true
-    this.setState({ loading: true })
-
-    // register a continuous listener -- triggered every time something changes
-    this.props.firebase.users().on('value', snapshot => {
-      // set a users object (collection) from the snapshot
-      const usersObject = snapshot.val()
-      
-      // map the list of keys (uids) from the usersObject
-      const usersList = Object.keys(usersObject).map(key => ({
+    this.setState({ loading: true })                               // set state loading true
+    this.props.firebase.users().on('value', snapshot => {          // register a continuous listener -- triggered every time user changes
+      const usersObject = snapshot.val()                           // set a users object (collection) from the snapshot
+      const usersList = Object.keys(usersObject).map(key => ({     // map the list of keys (uids) from the usersObject
         ...usersObject[key],
         uid: key,
       }))
-
-      // set state users and loading
-      this.setState({
+      this.setState({                                              // set state users and loading
         users: usersList,
         loading: false,
       })
     })
   }
-
-  // turn the listener off to prevent memory leaks
-  componentWilUnmount() {
-    this.props.firebase.users().off()
+  componentWillUnmount() {
+    this.props.firebase.users().off()                              // turn the listener off to prevent memory leaks
   }
-
   render() {
-    // deconstruct state
-    const { users, loading } = this.state
+    const { users, loading } = this.state                          // deconstruct state
     return (
-      <div>
-        <h1>Admin</h1>
-        <p>The Admin Page is accessible by every signed in Admin user.</p>
-        { loading && <div>Loading ...</div> }
-        <UserList users={users} />
+      <div id='wrapper'>
+        <div className='container admin'>
+          <Typography 
+            variant = 'h6' 
+            align = 'center' 
+            className = 'item' 
+          >
+            Admin Page
+          </Typography> 
+          <br />
+          <Typography 
+            variant = 'body1' 
+            align = 'center'
+            className = 'item' 
+          >
+            Accessible by Signed In ADMIN users.
+          </Typography> 
+          <br />
+          { loading && <div>Loading ...</div> }
+          <UserList users={users} />
+        </div>
       </div>
     )
   }
 }
-
 const UserList = ({ users }) => (
-  <ul>
-    {users.map(user => (
-      <li key={user.uid}>
-        <span><strong>ID:</strong> { user.uid }</span>
-        <span><strong>E-mail:</strong> { user.email }</span>
-        <span><strong>Username:</strong> { user.username }</span>
-      </li>
-    ))}
-  </ul>
+  <div className='container'>
+    <ul className='user-list'>
+      {users.map(user => (
+        <li key={user.uid} className='item'>
+          <span><strong>ID:</strong> { user.uid }</span>
+          <span><strong>E-mail:</strong> { user.email }</span>
+          <span><strong>Username:</strong> { user.username }</span>
+        </li>
+      ))}
+    </ul>
+  </div>
 )
-
-// set condition to authUser when  authUser has the Admin role (by virtue of the double negative)
+// set condition to true when an authUser has the Admin role (by virtue of the double negative)
 const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN]
 
 export default compose(withAuthorization(condition), withFirebase)(AdminPage)

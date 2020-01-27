@@ -7,15 +7,13 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
-  width: 100%;
+  justify-content: flex-start;
 }
 
 .item {
   flex: none;
-  width: 100%;
 }
 
-.btn {
-  font-weight: bold;
+.user-list {
+    list-style-type: none;
 }

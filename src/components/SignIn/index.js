@@ -2,6 +2,8 @@
 //  the entry point for the SignIn component
 import React from 'react'
 
+import { Typography } from '@material-ui/core'
+
 import SignInEmail from './SignInEmail'
 import SignInFacebook from './SignInFacebook'
 import SignInGoogle from './SignInGoogle'
@@ -17,7 +19,13 @@ const SignInPage = () => (
     <br />
     <PasswordForgetLink />
     <br />
-    <p > ***** OR ***** </p> 
+    <Typography 
+      variant = 'body1' 
+      align = 'center' 
+      className = 'item' 
+    > 
+      ***** OR *****
+      </Typography> 
     <br />
     <SignInFacebook />
     <br />

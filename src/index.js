@@ -11,8 +11,7 @@ import Firebase, { FirebaseContext } from './components/Firebase'
 
 ReactDOM.render(
   // Make Firebase Context available to the app
-  // By placing the FirebaseContext.Provider here, it assures that Firebase
-  // will only be instantiated once.
+  // By placing the FirebaseContext.Provider here, it assures that Firebase will only be instantiated once.
   <FirebaseContext.Provider value={ new Firebase() }>
     <App />
   </FirebaseContext.Provider>,

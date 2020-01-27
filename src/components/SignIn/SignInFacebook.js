@@ -24,7 +24,7 @@ class SignInFacebookBase extends Component {
   onSubmit = event => {
     this.props.firebase
       // execute the firebase method for facebook login
-      .doSignInWithTwitter()
+      .doSignInWithFacebook()
       // create a user in the Firebase Realtime Database too
       .then(socialAuthUser => {
         return this.props.firebase
@@ -32,6 +32,7 @@ class SignInFacebookBase extends Component {
           .set({
             username: socialAuthUser.additionalUserInfo.profile.name,
             email: socialAuthUser.additionalUserInfo.profile.email,
+            signInMethod: 'facebook',
             roles: {},
           })
       })
