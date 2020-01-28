@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   username: '',
   email: '',
   password: '',
-  roles: {},
+  // roles: {},
   error: null,
 }
 
@@ -35,7 +35,6 @@ class SignInEmailBase extends Component {
 
   onSubmit = event => {
     // get necessary info from this.state to pass to the Firebase authentication API
-    // const { username, email, password, roles } = this.state
     const { email, password } = this.state
 
     this.props.firebase
@@ -99,6 +98,7 @@ class SignInEmailBase extends Component {
             type = 'password' 
             placeholder = 'Password' 
           />
+          <br />
           <br />
           { /* disable the button if the form is invalid -- see isInvalid above */ } 
           <Button 

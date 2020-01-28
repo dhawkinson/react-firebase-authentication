@@ -8,7 +8,7 @@ import { Typography, Input, Checkbox, FormLabel, Button } from '@material-ui/cor
 
 import { withFirebase } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
-import * as ROLES from '../../constants/roles'
+// import * as ROLES from '../../constants/roles'
 
 import '../../styles/auth.css'
 
@@ -25,7 +25,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
-  isAdmin: false,
+  // isAdmin: false,
   error: null,
 }
 
@@ -39,10 +39,11 @@ class SignUpFormBase extends Component {
 
   onSubmit = event => {
     // get necessary info from this.state to pass to the Firebase authentication API
-    const { username, email, passwordOne, isAdmin } = this.state
-    const signInMethod = 'email/password'
-    const roles = {}
-    if ( isAdmin ) { roles[ROLES.ADMIN] = ROLES.ADMIN } //  set roles if the admin checkbox is checked
+    // const { username, email, passwordOne, isAdmin } = this.state
+    const { username, email, passwordOne } = this.state
+    const signInMethod = 'email'
+    // const roles = {}
+    // if ( isAdmin ) { roles[ROLES.ADMIN] = ROLES.ADMIN } //  set roles if the admin checkbox is checked
 
     this.props.firebase
       // create a user (limited access) in the authentication database
@@ -53,7 +54,8 @@ class SignUpFormBase extends Component {
         // because in the firebase auth module, users cannot be manipulated.
         return this.props.firebase
           .user(authUser.user.uid)          //  use the authUser.uid to:
-          .set({ username, email, signInMethod, roles })  //  write username, email & roles to the rdb
+          // .set({ username, email, signInMethod, roles })  //  write username, email & roles to the rdb
+          .set({ username, email, signInMethod})  //  write username, email to the rdb
       })
       .then(() => {
         // update state and redirect to Home page

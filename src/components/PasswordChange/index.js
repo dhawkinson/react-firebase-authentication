@@ -63,7 +63,7 @@ class PasswordChangeForm extends Component {
             variant='h6'
             className='item'
           >
-            Password Change Page
+            Password Change
           </Typography>
           <br />
           <Input

@@ -24,17 +24,14 @@ class SignInGoogleBase extends Component {
   onSubmit = event => {
     this.props.firebase
       // execute the firebase method for google login
-      // utilizes firebase SignInWithPopup method using the googleProvider (set up in Firebase/firebase.js)
       .doSignInWithGoogle()
-      // success - create a user in the Firebase Realtime Database too
+      // create a user in the Firebase Realtime Database too
       .then(socialAuthUser => {
         return this.props.firebase
           .user(socialAuthUser.user.uid)
           .set({
             username: socialAuthUser.user.displayName,
-            email: socialAuthUser.user.email,
             signInMethod: 'google',
-            roles: {},
           })
       })
       // set state (error to null) and redirect to Home Page
@@ -59,7 +56,7 @@ class SignInGoogleBase extends Component {
     const { error } = this.state
 
     return ( 
-      <form className = 'container google' onSubmit = { this.onSubmit }>
+      <form className = 'container google' onSubmit = { this.onSubmit } >
         <Button className = 'item btn btn-secondary' type = 'submit' > SIGN IN WITH GOOGLE </Button>
 
         { error && <p> { error.message } </p> }

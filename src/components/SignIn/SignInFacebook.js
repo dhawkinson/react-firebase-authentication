@@ -31,12 +31,10 @@ class SignInFacebookBase extends Component {
           .user(socialAuthUser.user.uid)
           .set({
             username: socialAuthUser.additionalUserInfo.profile.name,
-            email: socialAuthUser.additionalUserInfo.profile.email,
             signInMethod: 'facebook',
-            roles: {},
           })
       })
-      // success - set state (error to null) and redirect to Home Page
+      // set state (error to null) and redirect to Home Page
       .then(socialAuthUser => {
         this.setState({
             error: null
@@ -58,16 +56,8 @@ class SignInFacebookBase extends Component {
     const { error } = this.state
 
     return ( 
-      <form 
-        className = 'container facebook' 
-        onSubmit = { this.onSubmit } 
-      >
-        <Button 
-          className = 'item btn btn-secondary' 
-          type = 'submit' 
-        >
-          SIGN IN WITH FACEBOOK
-        </Button>
+      <form className = 'container facebook' onSubmit = { this.onSubmit } >
+        <Button className = 'item btn btn-secondary' type = 'submit' > SIGN IN WITH FACEBOOK </Button>
 
         { error && <p> { error.message } </p> }
       </form>

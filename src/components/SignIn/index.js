@@ -17,6 +17,8 @@ const SignInPage = () => (
   <div id = 'wrapper' >
     <SignInEmail />
     <br />
+    <SignUpLink />
+    <br />
     <PasswordForgetLink />
     <br />
     <Typography 
@@ -32,8 +34,6 @@ const SignInPage = () => (
     <SignInGoogle />
     <br />
     <SignInTwitter />
-    <br />
-    <SignUpLink />
   </div>
 )
 

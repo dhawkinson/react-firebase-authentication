@@ -55,8 +55,8 @@ class Firebase {
     this.db = app.database()  // Gets the Database service for the current app
 
     // Social media login providers (authorization methods within Firebase)
-    this.googleProvider = new app.auth.GoogleAuthProvider()
     this.facebookProvider = new app.auth.FacebookAuthProvider()
+    this.googleProvider = new app.auth.GoogleAuthProvider()
     this.twitterProvider = new app.auth.TwitterAuthProvider()
   }
 
@@ -104,15 +104,9 @@ class Firebase {
           .once('value')                        
           .then(snapshot => {                          
             const dbUser = snapshot.val()
-            console.log('dbUser ',dbUser)
-            // default empty roles
-            if ( !dbUser.roles ) {
-              dbUser.roles = {}
-            }
             // merge auth and db user
             authUser = {
               uid: authUser.uid,
-              email: authUser.email,
               ...dbUser,
             }
             next(authUser)

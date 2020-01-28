@@ -31,9 +31,7 @@ class SignInTwitterBase extends Component {
           .user(socialAuthUser.user.uid)
           .set({
             username: socialAuthUser.additionalUserInfo.profile.name,
-            email: socialAuthUser.additionalUserInfo.profile.email,
             signInMethod: 'twitter',
-            roles: {},
           })
       })
       // success - set state (error to null) and redirect to Home Page
